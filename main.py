@@ -2,7 +2,6 @@ import time, threading
 import tkinter as tk
 from tkinter import ttk, font
 
-
 class MainTimer:
 
     def __init__(self):
@@ -48,7 +47,8 @@ class MainTimer:
         self.reset_button = ttk.Button(self.grid_layout, text='Reset', command=self.reset_timer)
         self.reset_button.grid(row=0, column=2)
 
-        
+        self.pomodoro_counter_label = ttk.Label(self.grid_layout, text='Cycles: 0', font=('Ubuntu', 16))
+        self.pomodoro_counter_label.grid(row=1, column=0, columnspan=3, pady=10)
         
         self.root.mainloop()
 

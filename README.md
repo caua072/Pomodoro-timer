@@ -1,4 +1,4 @@
 # Pomodoro-timer
 
 - [x] Interface
-- [ ] Logic
+- [x] Logic

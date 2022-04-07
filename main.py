@@ -1,3 +1,4 @@
+from cgitb import text
 import time, threading
 import tkinter as tk
 from tkinter import ttk, font
@@ -55,6 +56,7 @@ class MainTimer:
         self.cycles = 0
         self.skipped = False
         self.stopped = False
+        self.running = False
         
         self.root.mainloop()
 
@@ -67,7 +69,8 @@ class MainTimer:
         timer_id = self.tabs.index(self.tabs.select()) + 1
 
         if timer_id == 1:
-            full_seconds = 5
+            full_seconds = 60 * 25
+            #full_seconds = 5
             while full_seconds > 0 and not self.stopped:
                 minutes, seconds = divmod(full_seconds, 60)
                 self.pomodoro_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
@@ -86,21 +89,58 @@ class MainTimer:
                 self.start_timer()
 
         elif timer_id == 2:
-            full_seconds = 5
+            full_seconds = 60 * 5
+            #full_seconds = 5
             while full_seconds > 0 and not self.stopped:
                 minutes, seconds = divmod(full_seconds, 60)
                 self.sb_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
                 self.root.update()
                 time.sleep(1)
                 full_seconds -= 1
+            if not self.stopped or self.skipped:
+                self.tabs.select(0)
+                self.start_timer()
+
+        elif timer_id == 3:
+            full_seconds = 60 * 10
+            #full_seconds = 5
+            while full_seconds > 0 and not self.stopped:
+                minutes, seconds = divmod(full_seconds, 60)
+                self.lb_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
+                self.root.update()
+                time.sleep(1)
+                full_seconds -= 1
+            if not self.stopped or self.skipped:
+                self.tabs.select(0)
+                self.start_timer()
 
     def start_timer_thread(self):
-        t = threading.Thread(target=self.start_timer)
-        t.start()
+        if not self.running:
+            t = threading.Thread(target=self.start_timer)
+            t.start()
+            self.running = True
     
     def reset_timer(self):
-        pass
+        self.stopped = True
+        self.skipped = False
+        self.cycles = 0
+        self.pomodoro_timer_label.config(text='25:00')
+        self.sb_timer_label.config(text='05:00')
+        self.lb_timer_label.config(text='10:00')
+        self.pomodoro_counter_label.config(text='Cycles: 0')
+        self.running = False
     
     def skip_timer(self):
-        pass
+        current_tab = self.tabs.index(self.tabs.select())
+        if current_tab == 0:
+            self.pomodoro_timer_label.config(text='25:00')
+        elif current_tab == 1:
+            self.sb_timer_label.config(text='05:00')
+        elif current_tab == 2:
+            self.lb_timer_label.config(text='10:00')
+
+        self.skipped = True
+        self.stopped = True
+
+
 MainTimer()

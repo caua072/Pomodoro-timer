@@ -1,9 +1,5 @@
 # Pomodoro-timer
 
-- [x] Interface
-- [x] Logic
-- [x] Pop up
-- [x] Audio
-- [x] Done
+A timer using pomodoro technique for personal use
 
-- [x] Pause timer
+Used python and tkinter for this project

@@ -44,19 +44,24 @@ class MainTimer:
         self.start_button = ttk.Button(self.grid_layout, text='Start', command=self.start_timer_thread)
         self.start_button.grid(row=0, column=0)
 
+        self.pause_button = ttk.Button(self.grid_layout, text='Pause', command=self.pause_timer)
+        self.pause_button.grid(row=0, column=1)
+
         self.skip_button = ttk.Button(self.grid_layout, text='Skip', command=self.skip_timer)
-        self.skip_button.grid(row=0, column=1)
+        self.skip_button.grid(row=0, column=2)
 
         self.reset_button = ttk.Button(self.grid_layout, text='Reset', command=self.reset_timer)
-        self.reset_button.grid(row=0, column=2)
+        self.reset_button.grid(row=0, column=3)
 
         self.pomodoro_counter_label = ttk.Label(self.grid_layout, text='Cycles: 0', font=('Ubuntu', 16))
-        self.pomodoro_counter_label.grid(row=1, column=0, columnspan=3, pady=10)
+        self.pomodoro_counter_label.grid(row=1, column=0, columnspan=4, pady=10)
 
         self.cycles = 0
         self.skipped = False
         self.stopped = False
         self.running = False
+
+        self.count = 1
         
         self.root.mainloop()
 
@@ -65,18 +70,26 @@ class MainTimer:
     def start_timer(self):
         self.stopped = False
         self.skipped = False
+        self.pause = False
         
         timer_id = self.tabs.index(self.tabs.select()) + 1
 
         if timer_id == 1:
                 full_seconds = 60 * 25
-                full_seconds = 5
+                #full_seconds = 5
+ 
                 while full_seconds > 0 and not self.stopped:
+
+                    if self.pause:
+                        self.count = 0
+                    elif not self.pause:
+                        self.count = 1
+
                     minutes, seconds = divmod(full_seconds, 60)
                     self.pomodoro_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
                     self.root.update()
                     time.sleep(1)
-                    full_seconds -= 1
+                    full_seconds -= self.count
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
@@ -93,13 +106,19 @@ class MainTimer:
 
         elif timer_id == 2:
                 full_seconds = 60 * 5
-                full_seconds = 5
+                #full_seconds = 5
                 while full_seconds > 0 and not self.stopped:
+
+                    if self.pause:
+                        self.count = 0
+                    elif not self.pause:
+                        self.count = 1
+                    
                     minutes, seconds = divmod(full_seconds, 60)
                     self.sb_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
                     self.root.update()
                     time.sleep(1)
-                    full_seconds -= 1
+                    full_seconds -= self.count
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
@@ -110,13 +129,13 @@ class MainTimer:
 
         elif timer_id == 3:
                 full_seconds = 60 * 10
-                full_seconds = 5
+                #full_seconds = 5
                 while full_seconds > 0 and not self.stopped:
                     minutes, seconds = divmod(full_seconds, 60)
                     self.lb_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
                     self.root.update()
                     time.sleep(1)
-                    full_seconds -= 1
+                    full_seconds -= self.count
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
@@ -157,5 +176,22 @@ class MainTimer:
 
         self.skipped = True
         self.stopped = True
+
+    def pause_timer(self):
+
+        #if self.pause_button['text'] == 'Pause':
+        #    self.pause_button['text'] = 'Unpause'
+        #else:
+        #    self.pause_button['text'] = 'Pause'
+        
+        if not self.pause:
+            self.pause_button.config(text='Unpause')
+            self.pause = True
+            
+        elif self.pause:
+            self.pause_button.config(text='Pause')
+            self.pause = False
+            
+
 
 MainTimer()

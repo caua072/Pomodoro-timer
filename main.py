@@ -2,7 +2,7 @@ import time, threading
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
-
+from playsound import playsound
 class MainTimer:
 
     def __init__(self):
@@ -77,6 +77,9 @@ class MainTimer:
                     self.root.update()
                     time.sleep(1)
                     full_seconds -= 1
+
+                if not self.skipped and not self.stopped or self.skipped and self.stopped:
+                    playsound('assets/ring_edited.mp3')
                 
                 if not self.stopped or self.skipped:
                     self.cycles += 1
@@ -97,6 +100,10 @@ class MainTimer:
                     self.root.update()
                     time.sleep(1)
                     full_seconds -= 1
+
+                if not self.skipped and not self.stopped or self.skipped and self.stopped:
+                    playsound('assets/ring_edited.mp3')
+                
                 if not self.stopped or self.skipped:
                     self.tabs.select(0)
                     self.start_timer()
@@ -110,6 +117,10 @@ class MainTimer:
                     self.root.update()
                     time.sleep(1)
                     full_seconds -= 1
+
+                if not self.skipped and not self.stopped or self.skipped and self.stopped:
+                    playsound('assets/ring_edited.mp3')
+
                 if not self.stopped or self.skipped:
                     self.tabs.select(0)
                     self.start_timer()
@@ -120,9 +131,12 @@ class MainTimer:
             t.start()
             self.running = True
         else:
-            messagebox.showwarning('Error', 'Reset the timer to start another')
-    
+            if messagebox.askyesno('Error', 'To start another timer you need to reset\n\n Do you want to reset now?', ):
+                self.reset_timer()
+                
+
     def reset_timer(self):
+
         self.stopped = True
         self.skipped = False
         self.cycles = 0

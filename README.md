@@ -2,6 +2,6 @@
 
 - [x] Interface
 - [x] Logic
-- [ ] Pop up
-- [ ] Audio
-- [ ] Done
+- [x] Pop up
+- [x] Audio
+- [x] Done

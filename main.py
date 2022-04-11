@@ -20,9 +20,9 @@ class MainTimer:
         self.tabs = ttk.Notebook(self.root)
         self.tabs.pack(fill='both', pady=10, expand=True)
 
-        self.tab1 = ttk.Frame(self.tabs, width=10, height=100)
-        self.tab2 = ttk.Frame(self.tabs, width=600, height=100)
-        self.tab3 = ttk.Frame(self.tabs, width=600, height=100)
+        self.tab1 = ttk.Frame(self.tabs, width=550, height=100)
+        self.tab2 = ttk.Frame(self.tabs, width=550, height=100)
+        self.tab3 = ttk.Frame(self.tabs, width=550, height=100)
 
         self.pomodoro_timer_label = ttk.Label(self.tab1, text='25:00', font=('Ubuntu', 48))
         self.pomodoro_timer_label.pack(pady=20)

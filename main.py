@@ -10,7 +10,7 @@ class MainTimer:
         # Interface
         
         self.root = tk.Tk()
-        self.root.geometry('600x300')
+        self.root.geometry('550x300')
         self.root.title('Pomodoro Timer Cauã')
 
         self.style = ttk.Style()
@@ -20,7 +20,7 @@ class MainTimer:
         self.tabs = ttk.Notebook(self.root)
         self.tabs.pack(fill='both', pady=10, expand=True)
 
-        self.tab1 = ttk.Frame(self.tabs, width=600, height=100)
+        self.tab1 = ttk.Frame(self.tabs, width=10, height=100)
         self.tab2 = ttk.Frame(self.tabs, width=600, height=100)
         self.tab3 = ttk.Frame(self.tabs, width=600, height=100)
 
@@ -54,7 +54,12 @@ class MainTimer:
         self.reset_button.grid(row=0, column=3)
 
         self.pomodoro_counter_label = ttk.Label(self.grid_layout, text='Cycles: 0', font=('Ubuntu', 16))
-        self.pomodoro_counter_label.grid(row=1, column=0, columnspan=4, pady=10)
+        self.pomodoro_counter_label.grid(row=1, column=0, pady=10)
+
+        self.full_time_label = ttk.Label(self.grid_layout,
+         text=f'Total Time: 00:00',
+         font=('Ubuntu', 16))
+        self.full_time_label.grid(row=1, column=3, pady=10)
 
         self.cycles = 0
         self.skipped = False
@@ -62,6 +67,8 @@ class MainTimer:
         self.running = False
 
         self.count = 1
+
+        self.total = 0
         
         self.root.mainloop()
 
@@ -91,6 +98,10 @@ class MainTimer:
                     time.sleep(1)
                     full_seconds -= self.count
 
+                    self.total += self.count
+                    total_min, total_sec = divmod(self.total, 60)
+                    self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
                 
@@ -119,6 +130,9 @@ class MainTimer:
                     self.root.update()
                     time.sleep(1)
                     full_seconds -= self.count
+                    self.total += self.count
+                    total_min, total_sec = divmod(self.total, 60)
+                    self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
@@ -136,6 +150,9 @@ class MainTimer:
                     self.root.update()
                     time.sleep(1)
                     full_seconds -= self.count
+                    self.total += self.count
+                    total_min, total_sec = divmod(self.total, 60)
+                    self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
@@ -164,6 +181,8 @@ class MainTimer:
         self.lb_timer_label.config(text='10:00')
         self.pomodoro_counter_label.config(text='Cycles: 0')
         self.running = False
+        self.full_time_label.config(text='Total Time: 00:00')
+        self.total = 0
     
     def skip_timer(self):
         current_tab = self.tabs.index(self.tabs.select())

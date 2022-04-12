@@ -10,7 +10,7 @@ class MainTimer:
         # Interface
         
         self.root = tk.Tk()
-        self.root.geometry('550x300')
+        self.root.geometry('560x300')
         self.root.title('Pomodoro Timer Cauã')
 
         self.style = ttk.Style()
@@ -20,9 +20,9 @@ class MainTimer:
         self.tabs = ttk.Notebook(self.root)
         self.tabs.pack(fill='both', pady=10, expand=True)
 
-        self.tab1 = ttk.Frame(self.tabs, width=550, height=100)
-        self.tab2 = ttk.Frame(self.tabs, width=550, height=100)
-        self.tab3 = ttk.Frame(self.tabs, width=550, height=100)
+        self.tab1 = ttk.Frame(self.tabs, width=560, height=100)
+        self.tab2 = ttk.Frame(self.tabs, width=560, height=100)
+        self.tab3 = ttk.Frame(self.tabs, width=560, height=100)
 
         self.pomodoro_timer_label = ttk.Label(self.tab1, text='25:00', font=('Ubuntu', 48))
         self.pomodoro_timer_label.pack(pady=20)
@@ -39,7 +39,7 @@ class MainTimer:
         self.tabs.add(self.tab3, text='LB')
 
         self.grid_layout = ttk.Frame(self.root)
-        self.grid_layout.pack(pady=10)
+        self.grid_layout.pack(pady=5)
 
         self.start_button = ttk.Button(self.grid_layout, text='Start', command=self.start_timer_thread)
         self.start_button.grid(row=0, column=0)
@@ -59,7 +59,7 @@ class MainTimer:
         self.full_time_label = ttk.Label(self.grid_layout,
          text=f'Total Time: 00:00',
          font=('Ubuntu', 16))
-        self.full_time_label.grid(row=1, column=3, pady=10)
+        self.full_time_label.grid(row=1, column=3)
 
         self.cycles = 0
         self.skipped = False
@@ -100,7 +100,12 @@ class MainTimer:
 
                     self.total += self.count
                     total_min, total_sec = divmod(self.total, 60)
-                    self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+                    total_hour, total_min = divmod(total_min, 60)
+
+                    if self.total < 60 * 60:
+                        self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+                    else:
+                        self.full_time_label.config(text=f'Total Time: {total_hour:d}:{total_min:02d}:{total_sec:02d}')
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')

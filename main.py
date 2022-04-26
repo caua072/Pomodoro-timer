@@ -11,6 +11,7 @@ class MainTimer:
         
         self.root = tk.Tk()
         self.root.geometry('560x300')
+        self.root.resizable(False, False)
         self.root.title('Pomodoro Timer Cauã')
 
         self.style = ttk.Style()

@@ -138,7 +138,13 @@ class MainTimer:
                     full_seconds -= self.count
                     self.total += self.count
                     total_min, total_sec = divmod(self.total, 60)
+                    total_hour, total_min = divmod(total_min, 60)
                     self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+
+                    if self.total < 60 * 60:
+                        self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+                    else:
+                        self.full_time_label.config(text=f'Total Time: {total_hour:d}:{total_min:02d}:{total_sec:02d}')
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
@@ -151,6 +157,12 @@ class MainTimer:
                 full_seconds = 60 * 10
                 #full_seconds = 5
                 while full_seconds > 0 and not self.stopped:
+
+                    if self.pause:
+                        self.count = 0
+                    elif not self.pause:
+                        self.count = 1
+
                     minutes, seconds = divmod(full_seconds, 60)
                     self.lb_timer_label.config(text=f'{minutes:02d}:{seconds:02d}')
                     self.root.update()
@@ -158,7 +170,13 @@ class MainTimer:
                     full_seconds -= self.count
                     self.total += self.count
                     total_min, total_sec = divmod(self.total, 60)
+                    total_hour, total_min = divmod(total_min, 60)
                     self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+
+                    if self.total < 60 * 60:
+                        self.full_time_label.config(text=f'Total Time: {total_min:02d}:{total_sec:02d}')
+                    else:
+                        self.full_time_label.config(text=f'Total Time: {total_hour:d}:{total_min:02d}:{total_sec:02d}')
 
                 if not self.skipped and not self.stopped or self.skipped and self.stopped:
                     playsound('assets/ring_edited.mp3')
